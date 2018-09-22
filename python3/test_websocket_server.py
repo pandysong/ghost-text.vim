@@ -2,25 +2,19 @@ import asyncio
 import websockets
 
 
-# class WebsocketServer:
-#    def __init__(self):
-#        pass
-#    def _handler
-
-# wakeup hack for windows
 async def wakeup():
     while True:
         await asyncio.sleep(1)
 
 
 async def hello(websocket, path):
-    msg = await websocket.recv()
-    print(msg)
-
-    # greeting = f"Hello {name}!"
-
-    # await websocket.send(greeting)
-    # print(f"> {greeting}")
+    while True:
+        try:
+            msg = await websocket.recv()
+        except websockets.exceptions.ConnectionClosed:
+            break
+        print(msg)
+    print("connection closed")
 
 start_server = websockets.serve(hello, 'localhost', 8765)
 loop = asyncio.get_event_loop()
