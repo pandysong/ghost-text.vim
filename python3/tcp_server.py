@@ -38,4 +38,6 @@ class TcpServer:
 
     def close(self):
         self.server.close()
+        print('tcp server requested to close')
         self.loop.run_until_complete(self.server.wait_closed())
+        print('tcp server all closed')

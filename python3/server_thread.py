@@ -1,3 +1,4 @@
+import time
 import asyncio
 import threading
 import websocket_server
@@ -20,18 +21,19 @@ class ServerThread:
                 self.stop_request_event.wait)
 
         def thread_function():
-            #loop = asyncio.get_event_loop()
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             hh = http_handler.GhostTextHttpHandler(8765)
-            self.tcp_svr = tcp_server.TcpServer(loop, hh)
-            self.tcp_svr.start()
+            tcp_svr = tcp_server.TcpServer(loop, hh)
+            tcp_svr.start()
 
             sh = websocket_handler.GhostTextWebsocketHandler()
-            self.ws_svr = websocket_server.WebsocketServer(loop, sh)
-            self.ws_svr.start()
-            task = loop.create_task(wait_for_stop(loop))
-            loop.run_until_complete(task)
+            ws_svr = websocket_server.WebsocketServer(loop, sh)
+            ws_svr.start()
+            loop.run_until_complete(wait_for_stop(loop))
+
+            ws_svr.close()
+            tcp_svr.close()
             loop.close()
             self.stop_response_event.set()
 
