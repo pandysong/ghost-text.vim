@@ -1,12 +1,20 @@
 import time
-import server_thread
+from single_server import start_server
+from single_server import stop_server
 
-t = server_thread.ServerThread()
-t.start()
 
-time.sleep(0.3)  # wait for thread to start up before printing
-print("started")
-print("press any key to sotp")
-input()
-t.stop()
-print("stopped")
+def print_usage():
+    print("s: start")
+    print("t: stop")
+    print("q: quit")
+
+
+while True:
+    print_usage()
+    i = input()
+    if i == 's':
+        start_server()
+    elif i == 't':
+        stop_server()
+    elif i == 'q':
+        break
