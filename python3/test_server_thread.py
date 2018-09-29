@@ -17,4 +17,5 @@ while True:
     elif i == 't':
         stop_server()
     elif i == 'q':
+        stop_server()
         break
