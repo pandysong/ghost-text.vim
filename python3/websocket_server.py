@@ -11,10 +11,16 @@ class WebsocketServer:
 
     def serve_coro(self):
         async def serve(websocket, path):
+            flag_first_message = True
+            conn_handler = None
             while True:
                 try:
                     msg = await websocket.recv()
-                    await self.handler(msg)
+                    if flag_first_message:
+                        conn_handler = await self.handler(msg)
+                        flag_first_message = False
+                    else:
+                        await conn_handler(msg)
                 except websockets.exceptions.ConnectionClosed:
                     break
             print("connection closed")

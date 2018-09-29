@@ -1,3 +1,8 @@
+class GhostTextWebsocketConnectionHandler:
+    async def __call__(self, message):
+        print("In connection ", message)
+
+
 class GhostTextWebsocketHandler:
     '''callable class to handle websocket message
     '''
@@ -6,4 +11,5 @@ class GhostTextWebsocketHandler:
         pass
 
     async def __call__(self, message):
-        print(message)
+        print("create a connection with ", message)
+        return GhostTextWebsocketConnectionHandler()
