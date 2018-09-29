@@ -1,21 +1,7 @@
 import vim
 
-
-def start_server():
-    '''todo:
-    check if the server is alreayd running
-    start the http and websocket server in separate thread so
-    it is not blocking here
-    '''
-    print("server started")
-
-
-def stop_server():
-    '''todo:
-    check if the server is running
-    stopping the server and stop the server thread
-    '''
-    print("server stoped")
+from single_server import start_server
+from single_server import stop_server
 
 
 def text_changed_from_vim():
