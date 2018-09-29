@@ -28,5 +28,5 @@ class WebsocketServer:
     def close(self):
         self.server.close()
         print('websocket server requested to close')
-        self.server.wait_closed()
+        self.loop.run_until_complete(self.server.wait_closed())
         print('websocket server all closed')
