@@ -23,6 +23,7 @@ function! s:GhostTextChanged()
 endfunction
 
 autocmd TextChangedI,TextChanged * call s:GhostTextChanged()
+autocmd VimLeavePre * call GhostTextStopServer()
 
 command! -bar GhostTextStartServer :call GhostTextStartServer()
 command! -bar GhostTextStopServer :call GhostTextStopServer()
