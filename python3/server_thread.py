@@ -22,7 +22,7 @@ class ServerThread:
         def thread_function():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            hh = http_handler.GhostTextHttpHandler(8765)
+            hh = http_handler.GhostTextHttpHandlerFactory(8765)
             tcp_svr = tcp_server.TcpServer(loop, hh)
             tcp_svr.start()
 
