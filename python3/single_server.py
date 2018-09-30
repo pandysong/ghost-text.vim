@@ -1,9 +1,10 @@
 import server_thread
+import test_websocket_handler
 
 st = None
 
 
-def start_server():
+def start_server(websocket_handler):
     '''todo:
     check if the server is alreayd running
     start the http and websocket server in separate thread so
@@ -14,7 +15,8 @@ def start_server():
         print("server already started")
         return
 
-    st = server_thread.ServerThread()
+    st = server_thread.ServerThread(
+        websocket_handler)
     st.start()
     print("server started")
 

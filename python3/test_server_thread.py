@@ -1,6 +1,7 @@
 import time
 from single_server import start_server
 from single_server import stop_server
+import test_websocket_handler
 
 
 def print_usage():
@@ -13,7 +14,8 @@ while True:
     print_usage()
     i = input()
     if i == 's':
-        start_server()
+        start_server(
+            test_websocket_handler.GhostTextWebsocketHandler)
     elif i == 't':
         stop_server()
     elif i == 'q':

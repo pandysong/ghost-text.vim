@@ -4,12 +4,11 @@ import threading
 import websocket_server
 import tcp_server
 import http_handler
-import websocket_handler
 
 
 class ServerThread:
-    def __init__(self):
-        pass
+    def __init__(self, web_socket_handler):
+        self.web_socket_handler = web_socket_handler
 
     def _threaded_function(self):
         self.stop_request_event = threading.Event()
@@ -27,7 +26,7 @@ class ServerThread:
             tcp_svr = tcp_server.TcpServer(loop, hh)
             tcp_svr.start()
 
-            sh = websocket_handler.GhostTextWebsocketHandler()
+            sh = self.web_socket_handler()
             ws_svr = websocket_server.WebsocketServer(loop, sh)
             ws_svr.start()
             loop.run_until_complete(wait_for_stop(loop))

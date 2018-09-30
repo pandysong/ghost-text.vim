@@ -1,7 +1,12 @@
 import vim
 
-from single_server import start_server
+from single_server import start_server as _start_server
 from single_server import stop_server
+import vim_websocket_handler
+
+
+def start_server():
+    _start_server(vim_websocket_handler.GhostTextWebsocketHandler)
 
 
 def text_changed_from_vim():
