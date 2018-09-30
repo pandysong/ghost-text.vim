@@ -24,3 +24,9 @@ class VimBuffer:
         '''
         vim.current.buffer[:] = lines
         vim.command(":redraw")
+
+    def cursor(self, selection):
+        '''refer to :help cursor
+           [{lnum}, {col}, {off}, {curswant}]
+        '''
+        vim.command(":call cursor({})".format(selection))
