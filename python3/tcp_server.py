@@ -15,7 +15,7 @@ class TcpServer:
 
     def start(self, host='localhost', port='4001'):
         coro = asyncio.start_server(
-            self.handler_factory(), host, port, loop=self.loop)
+            self.handler_factory.handler(), host, port, loop=self.loop)
         self.server = self.loop.run_until_complete(coro)
         print('server listen on {}:{}'.format(host, port))
 

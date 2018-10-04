@@ -5,7 +5,7 @@ class GhostTextHttpHandlerFactory:
     def __init__(self, websocket_port):
         self.websocket_port = websocket_port
 
-    def __call__(self):
+    def handler(self):
         '''this create a connection handler
         '''
         async def http_handler(reader, writer):

@@ -14,7 +14,7 @@ class GhostTextWebsocketHandler:
     '''callable class to handle websocket message
     '''
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         pass
 
     async def __call__(self, message):

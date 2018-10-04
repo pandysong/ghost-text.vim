@@ -4,11 +4,14 @@ import threading
 import websocket_server
 import tcp_server
 import http_handler
+import exchanger
+import vim_channel_handler
+import vim_websocket_handler
 
 
 class ServerThread:
-    def __init__(self, web_socket_handler):
-        self.web_socket_handler = web_socket_handler
+    def __init__(self):
+        pass
 
     def _threaded_function(self):
         self.stop_request_event = threading.Event()
@@ -22,17 +25,40 @@ class ServerThread:
         def thread_function():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            hh = http_handler.GhostTextHttpHandlerFactory(8765)
-            tcp_svr = tcp_server.TcpServer(loop, hh)
-            tcp_svr.start()
 
-            sh = self.web_socket_handler()
-            ws_svr = websocket_server.WebsocketServer(loop, sh)
+            ex = exchanger.Exchanger()
+
+            # start http server for browser
+            hh = http_handler.GhostTextHttpHandlerFactory(8765)
+            http_svr = tcp_server.TcpServer(loop, hh)
+            http_svr.start()
+
+            # start tcp server for vim channel to connect
+            ch = vim_channel_handler.Channel(
+                ex.channel_rx_coro())
+            ch_svr = tcp_server.TcpServer(loop, ch)
+            ch_svr.start(host='localhost', port='4002')
+
+            # exchanger needs channel to send message
+            ex.channel = ch
+
+            # start websockets server
+            ws_manager = vim_websocket_handler.Manager(
+                ex.websocket_rx_coro())
+            ws_svr = websocket_server.WebsocketServer(loop,
+                                                      ws_manager)
             ws_svr.start()
+
+            # exchanger needs ws_manager to send message
+            ex.ws_manager = ws_manager
+
+            # run until the stop request event will be set
             loop.run_until_complete(wait_for_stop(loop))
 
+            # teardown
             ws_svr.close()
-            tcp_svr.close()
+            ch_svr.close()
+            http_svr.close()
             loop.close()
             self.stop_response_event.set()
 

@@ -8,7 +8,7 @@ class VimBuffers:
         self.buffers = []
         self.creator = bufferCreator
 
-    def buffer_with_name(self, name):
+    async def buffer_with_name(self, name):
         '''make the current buffer with `name`
 
         find the buffer with `name` or create a new one if not found
@@ -17,5 +17,10 @@ class VimBuffers:
         if x:
             return x[0]
         new_buf = self.creator(name)
-        self.buffers.append(new_buf)
-        return new_buf
+        success = await new_buf.create()
+        if success:
+            self.buffers.append(new_buf)
+            return new_buf
+        else:
+            print('error: could not create buffer with name', name)
+            return None
