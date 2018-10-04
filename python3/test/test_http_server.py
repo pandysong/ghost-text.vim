@@ -1,3 +1,11 @@
+import os
+import sys
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_path = os.path.abspath(os.path.join(dir_path, '..'))
+sys.path.insert(0, parent_path)
+print(sys.path)
+
 import asyncio
 import http_handler
 import tcp_server
@@ -10,7 +18,7 @@ async def wakeup():
 
 print('test_http_server')
 loop = asyncio.get_event_loop()
-h = http_handler.GhostTextHttpHandler(8765)
+h = http_handler.GhostTextHttpHandlerFactory(8765)
 print('start server')
 s = tcp_server.TcpServer(loop, h)
 
