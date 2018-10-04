@@ -2,6 +2,7 @@ import os
 import vim
 import time
 import json
+import ghost_log
 
 from single_server import start_server
 from single_server import stop_server
@@ -13,7 +14,7 @@ def text_changed_from_vim():
     if not name.startswith("GhostText"):
         return
 
-    print("{} lines".format(len(vim.current.buffer)))
+    ghost_log.p("{} lines".format(len(vim.current.buffer)))
     text = '\n'.join(vim.current.buffer)
     # vim.command()
     selections = [{'start': 1, 'end': 1}]
@@ -35,7 +36,7 @@ def update_text(name, lines, selections):
     vim.command(':b ' + name)
     mode = vim.eval('mode()')
     if not mode == 'n':
-        print('mode', mode)
+        ghost_log.p('mode', mode)
         vim.command('call feedkeys("\<esc>")')
         vim.command(":redraw")
 

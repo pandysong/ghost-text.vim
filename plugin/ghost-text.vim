@@ -10,6 +10,8 @@ sys.path.insert(0, python_root_dir)
 import vim_ghost_text
 EOF
 
+let g:ghost_text_verbose = 0
+
 " manage server
 function! GhostTextStartServer()
     py3 vim_ghost_text.start_server()

@@ -1,4 +1,5 @@
 import json
+import ghost_log
 
 
 class Channel:
@@ -15,13 +16,13 @@ class Channel:
             self.writer.write(message.encode())
             await self.writer.drain()
         else:
-            print('error: vim channel not connected')
+            ghost_log.p('error: vim channel not connected')
 
     def handler(self):
         async def channel_handler(reader, writer):
-            print('vim channel connected')
+            ghost_log.p('vim channel connected')
             if not self.writer == None:
-                print('error, only one vim channel connection allowed')
+                ghost_log.p('error, only one vim channel connection allowed')
                 return
 
             self.writer = writer
@@ -30,17 +31,17 @@ class Channel:
                 data = await reader.read(4096)
                 if not data:
                     break
-                print(data.decode())
+                ghost_log.p(data.decode())
                 try:
                     json_data = json.loads(data.decode())
                 except ValueError:
-                    print("json decoding failed")
+                    ghost_log.p("json decoding failed")
                     continue
 
                 # todo: send to remote via websocket
                 await self.channel_rx_coro(json_data)
 
-            print('vim channel closed')
+            ghost_log.p('vim channel closed')
             writer.close()
             self.writer = None
 

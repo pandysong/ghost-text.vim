@@ -1,4 +1,5 @@
 import weakref
+import ghost_log
 
 
 def _cursor_pos(text, offset):
@@ -41,11 +42,11 @@ class Exchanger:
             msg = json_from_vim['text']
             ws_man = self.ws_manager_wr()
             if not ws_man:
-                print('warning: no connection to browswer, ignore msg from vim')
+                ghost_log.p(
+                    'warning: no connection to browswer, ignore msg from vim')
                 return
 
-            print('vim -> browser, {}'.format(json_from_vim))
-            print(ws_man)
+            ghost_log.p('vim -> browser, {}'.format(json_from_vim))
             await ws_man.send(buf_name, msg, None)
         return coro
 
@@ -53,13 +54,14 @@ class Exchanger:
         async def coro(buf_name, msg_from_browser):
             ''' msg_from_browser is the json from browser
             '''
-            print('vim <- browser, {}'.format(msg_from_browser))
+            ghost_log.p('vim <- browser, {}'.format(msg_from_browser))
             text = msg_from_browser['text']
             cursor_pos = msg_from_browser['selections'][0]['end']
             pos = _cursor_pos(text, cursor_pos)
             chnl = self.channel_wr()
             if not chnl:
-                print('error: no connection to vim, ignore msg from browser')
+                ghost_log.p(
+                    'error: no connection to vim, ignore msg from browser')
                 return
             # using the name to update text in vim
             await chnl.send(self._command_template.format(

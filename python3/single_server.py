@@ -1,4 +1,5 @@
 import server_thread
+import ghost_log
 
 st = None
 channel = None
@@ -12,7 +13,7 @@ def start_server():
     '''
     global st
     if st != None:
-        print("server already started")
+        ghost_log.p("server already started")
         return
 
     st = server_thread.ServerThread()
@@ -26,9 +27,9 @@ def stop_server():
     '''
     global st
     if st == None:
-        print("server not started yet")
+        ghost_log.p("server not started yet")
         return
 
     st.stop()
-    print("server stoped")
+    ghost_log.p("server stoped")
     st = None

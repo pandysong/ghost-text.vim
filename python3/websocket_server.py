@@ -1,4 +1,5 @@
 import websockets
+import ghost_log
 
 
 class WebsocketServer:
@@ -13,10 +14,10 @@ class WebsocketServer:
         start_server = websockets.serve(
             self.ws_manager.handler(), host, port)
         self.server = self.loop.run_until_complete(start_server)
-        print('websockets server listen on {}:{}'.format(host, port))
+        ghost_log.p('websockets server listen on {}:{}'.format(host, port))
 
     def close(self):
         self.server.close()
-        print('websocket server requested to close')
+        ghost_log.p('websocket server requested to close')
         self.loop.run_until_complete(self.server.wait_closed())
-        print('websocket server all closed')
+        ghost_log.p('websocket server all closed')

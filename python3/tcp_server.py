@@ -1,5 +1,5 @@
 import asyncio
-import logging
+import ghost_log
 
 
 class TcpServer:
@@ -17,10 +17,10 @@ class TcpServer:
         coro = asyncio.start_server(
             self.handler_factory.handler(), host, port, loop=self.loop)
         self.server = self.loop.run_until_complete(coro)
-        print('server listen on {}:{}'.format(host, port))
+        ghost_log.p('server listen on {}:{}'.format(host, port))
 
     def close(self):
         self.server.close()
-        print('tcp server requested to close')
+        ghost_log.p('tcp server requested to close')
         self.loop.run_until_complete(self.server.wait_closed())
-        print('tcp server all closed')
+        ghost_log.p('tcp server all closed')
