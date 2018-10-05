@@ -1,49 +1,64 @@
 # ghost-text.vim
-support for ghost-text in regular vim
 
-# design
+support for ghost-text in vim:
 
-- server start
-- on a new websocket, create a new buffer
-- receives the current text from browser
-- on local updates, send the text to browser
-- on disconnection, leave the buffer open (just in case if the browser)
+refer to https://github.com/GhostText/GhostText
 
-## tcp server
+# install with vundle:
 
-TCP server handler is designed to have a simple http handler for handle simple
-http request as well as the channel request from Vim which is a bi-drectional
-communication
+```
+Plugin 'pandysong/ghost-text.vim'
+```
 
-| ----------------------- | ------------------------------------- |
-| http server components  | Comments                              |
-|-------------------------+---------------------------------------|
-| http_handler            | return in json websocket port         |
-| tcp_server              |                                       |
-| ----------------------- | ------------------------------------- |
+Then 
+```
+:so %
+:PluginInstall
+```
 
-| -----------------------      | -------------------------------------------------------------      |
-| websockets server components | Comments                                                           |
-|------------------------------+--------------------------------------------------------------------|
-| vim_websocket_handler        | handle message from browser                                        |
-| websocket_server             |                                                                    |
-| -----------------------      | ------------------------------------------------------------       |
+Note that part of the plugin is written in Python3, so vim must be compiled with
+Python3
+
+running following to see if it supports Python3:
+```
+:py3 import vim; print("hello")
+```
+
+Also note that vim must support `channel`, so better to use the latest vim.
+
+# start ghost-text.vim
+
+## start on vim side
+```
+:GhostTextStart
+```
+
+This will create a server for browser to connect. 
+
+## click GhostText in a browser
+
+Refer to https://github.com/GhostText/GhostText
+
+Once a text editor box is selected, an buffer will be open in vim. Editing on
+either one will synchronize with the other one.
+
+## stop on vim side
+
+```
+:GhostTextStop
+```
+
+Note that if you need to save the buf to another file, one may need to issue
+command explicitly:
+
+```
+:w another_file_name.txt
+```
 
 
-| -----------------------     | -----------------------------------------  |
-| channel server components   | Comments                                   |
-| --------------------------- | --------------------                       |
-| vim_channel_handler         | handle connection to vim via vim `channel` |
-| tcp_server                  |                                            |
-| -----------------------     | ----------------------------------------   |
+# todo 
 
-Note that there is only one connection from vim to channel server (todo: we may
-protect it by a ramdon password)
+- support automatic syntax
+- for text with html tags, it would be better to map to/from markdown.
 
-So we could create `vim_channel_handler.ChannelHandler` before a connection was
-created and pass it to construct `vim_buffer`
-
-Vim   <---->  Channel Server <---> WebSocket Server  <--->  Browser
-                                          |---> Browser 
-
-The multiple websockets connections are multiplexed by unique vim buffer names.
+This is still a very preliminary version.
