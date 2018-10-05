@@ -3,8 +3,7 @@ import json
 import ghost_log
 
 
-def _buf_name_from_title_name(title):
-    return "GhostText_{}".format(title.replace(' ', '+'))
+_buf_idx = 0
 
 
 class Manager:
@@ -28,14 +27,14 @@ class Manager:
     def handler(self):
         async def ws_handler(websocket, path):
             flag_first_message = True
+            global _buf_idx
+            buf_name = 'GhostText_{}'.format(_buf_idx)
+            _buf_idx = _buf_idx + 1
             while True:
                 try:
                     msg = await websocket.recv()
                     json_msg = json.loads(msg)  # todo: add exception handling
 
-                    # map to buffer name
-                    # todo: we may map websocket to buffer name
-                    buf_name = _buf_name_from_title_name(json_msg['title'])
                     if flag_first_message:
                         # on first message, create a map
                         ghost_log.p('add map from {} to {}'.format(
