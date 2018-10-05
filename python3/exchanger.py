@@ -56,8 +56,11 @@ class Exchanger:
             '''
             ghost_log.p('vim <- browser, {}'.format(msg_from_browser))
             text = msg_from_browser['text']
-            cursor_pos = msg_from_browser['selections'][0]['end']
-            pos = _cursor_pos(text, cursor_pos)
+            try:
+                cursor_pos = msg_from_browser['selections'][0]['end']
+                pos = _cursor_pos(text, cursor_pos)
+            except:
+                pos = (1, 1)
             chnl = self.channel_wr()
             if not chnl:
                 ghost_log.p(

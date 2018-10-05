@@ -13,24 +13,27 @@ EOF
 let g:ghost_text_verbose = 0
 
 " manage server
-function! GhostTextStartServer()
+function! GhostTextStart()
     py3 vim_ghost_text.start_server()
     let c = 1
     while c <=3 
         sleep 100m
         let g:channel = ch_open('localhost:4002')
         if ch_status(g:channel) == "open"
-            echom 'channel connected to localhost:4002'
-            break
+            echom 'GhostText for vim started'
+            return
         endif
 
         echom 'could not open channel to localhost:4002, retry...'
         let c += 1
 
     endwhile
+
+    echom 'fail to start GhostText for vim'
+
 endfunction
 
-function! GhostTextStopServer()
+function! GhostTextStop()
     if ch_status(g:channel) == "open"
         call ch_close(g:channel)
     endif
@@ -61,7 +64,7 @@ function! s:GhostTextChanged()
 endfunction
 
 autocmd TextChangedI,TextChanged * call s:GhostTextChanged()
-autocmd VimLeavePre * call GhostTextStopServer()
+autocmd VimLeavePre * call GhostTextStop()
 
-command! -bar GhostTextStartServer :call GhostTextStartServer()
-command! -bar GhostTextStopServer :call GhostTextStopServer()
+command! -bar GhostTextStart :call GhostTextStart()
+command! -bar GhostTextStop :call GhostTextStop()

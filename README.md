@@ -25,8 +25,6 @@ communication
 | -----------------------      | -------------------------------------------------------------      |
 | websockets server components | Comments                                                           |
 |------------------------------+--------------------------------------------------------------------|
-| vim_buffer                   | manage a single vim buffer, it does it through vim_channel_handler |
-| vim_buffers                  | manage the vim buffer through vim_buffer                           |
 | vim_websocket_handler        | handle message from browser                                        |
 | websocket_server             |                                                                    |
 | -----------------------      | ------------------------------------------------------------       |
