@@ -14,7 +14,6 @@ def text_changed_from_vim():
     if not name.startswith("GhostText"):
         return
 
-    ghost_log.p("{} lines".format(len(vim.current.buffer)))
     text = '\n'.join(vim.current.buffer)
     # vim.command()
     selections = [{'start': 1, 'end': 1}]
@@ -39,7 +38,6 @@ def update_text(name, lines, selections):
         ghost_log.p('mode', mode)
         vim.command('call feedkeys("\<esc>")')
         vim.command(":redraw")
-
     vim.current.buffer[:] = lines.split('\n')
     vim.command(":redraw")
     vim.command(":call cursor({})".format(selections))

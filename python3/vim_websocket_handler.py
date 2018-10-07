@@ -21,7 +21,7 @@ class Manager:
             if info['name'] == buf_name:
                 resp = info['template']
                 resp['text'] = text
-                ghost_log.p('vim -> browser, {}'.format(json.dumps(resp)))
+                ghost_log.p('server -> browser, {}'.format(json.dumps(resp)))
                 await ws.send(json.dumps(resp))
 
     def handler(self):
