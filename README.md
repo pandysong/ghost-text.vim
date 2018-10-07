@@ -1,3 +1,5 @@
+<img src="demo/demo.gif" alt="demo screencast" align="right">
+
 # ghost-text.vim
 
 support for ghost-text in vim:
