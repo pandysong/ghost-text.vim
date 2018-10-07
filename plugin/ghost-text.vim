@@ -1,3 +1,13 @@
+if has('python3')  == 0
+    echom 'this plugin needs python3 compiled.'
+    finish
+endif
+
+if exists('*ch_open') == 0
+    echom 'this plugin needs channel support in vim. try using latest vim.'
+    finish
+endif
+
 let s:plugin_root_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 
 py3 << EOF
