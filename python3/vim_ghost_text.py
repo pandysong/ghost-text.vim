@@ -3,10 +3,27 @@ import vim
 import time
 import json
 import ghost_log
-
-from single_server import start_server
-from single_server import stop_server
+import single_server
 import vim_websocket_handler
+
+
+def start_server():
+    single_server.start_server()
+    for _ in range(3):
+        time.sleep(.1)
+        vim.command("let g:channel = ch_open('localhost:4002')")
+        if vim.eval('ch_status(g:channel)') == "open":
+            ghost_log.p('GhostText for vim started')
+            return
+        ghost_log.p('could not open channel to localhost:4002, retry...')
+
+    ghost_log.p('fail to start GhostText for vim')
+
+
+def stop_server():
+    if vim.eval('ch_status(g:channel)') == "open":
+        vim.command('call ch_close(g:channel)')
+    single_server.stop_server()
 
 
 def text_changed_from_vim():
