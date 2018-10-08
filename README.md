@@ -2,7 +2,7 @@
 
 # ghost-text.vim
 
-support for ghost-text in vim:
+support for GhostText in vim:
 
 refer to https://github.com/GhostText/GhostText
 
@@ -24,6 +24,12 @@ Python3
 running following to see if it supports Python3:
 ```
 :py3 import vim; print("hello")
+```
+
+The plugin also needs `websockets` package:
+
+```
+python3 install -m pip websockets
 ```
 
 Also note that vim must support `channel`, so better to use the latest vim.
