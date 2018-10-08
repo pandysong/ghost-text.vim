@@ -27,18 +27,17 @@ class Manager:
     def handler(self):
         async def ws_handler(websocket, path):
             flag_first_message = True
-            global _buf_idx
-            buf_name = 'GhostText_{}'.format(_buf_idx)
-            _buf_idx = _buf_idx + 1
             while True:
                 try:
                     msg = await websocket.recv()
                     json_msg = json.loads(msg)  # todo: add exception handling
 
                     if flag_first_message:
+                        global _buf_idx
+                        buf_name = 'GhostText_{}'.format(_buf_idx)
+                        _buf_idx = _buf_idx + 1
                         # on first message, create a map
-                        ghost_log.p('add map from {} to {}'.format(
-                            websocket, buf_name))
+                        ghost_log.p('add buf_name {}'.format(buf_name))
                         self.connections[websocket] = {
                             'name': buf_name,
                             'template': json_msg
@@ -49,6 +48,9 @@ class Manager:
 
                 except websockets.exceptions.ConnectionClosed:
                     break
+
+            ghost_log.p('remove buf_name {}'.format(
+                self.connections[websocket]['name']))
             del self.connections[websocket]
             ghost_log.p("connection closed")
         return ws_handler

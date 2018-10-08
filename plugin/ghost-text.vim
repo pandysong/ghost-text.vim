@@ -22,21 +22,7 @@ EOF
 
 let g:ghost_text_verbose = 0
 
-" Below functions called by remote via channel
-function! s:GhostTextCreateBuffer(name)
-    if buffer_exists(a:name)
-        exec 'buf '.a:name
-    else
-        exec 'enew'
-        exec 'file '.a:name
-    endif
-    set buftype=nofile
-    set bufhidden=hide
-    set noswapfile
-endfunction
-
 function! GhostTextUpdateText(name, text, selections)
-    call s:GhostTextCreateBuffer(a:name)
     py3 vim_ghost_text.update_text(vim.eval("a:name"), vim.eval("a:text"), vim.eval("a:selections"))
 endfunction
 

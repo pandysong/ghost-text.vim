@@ -6,9 +6,12 @@ import ghost_log
 import single_server
 import vim_websocket_handler
 
+_is_updating_from_remote = False
+
 
 def start_server():
-    single_server.start_server()
+    if not single_server.start_server():
+        return
     for _ in range(3):
         time.sleep(.1)
         vim.command("let g:channel = ch_open('localhost:4002')")
@@ -31,6 +34,10 @@ def text_changed_from_vim():
     if not name.startswith("GhostText"):
         return
 
+    if _is_updating_from_remote:
+        return
+
+    ghost_log.p('text changed from vim')
     text = '\n'.join(vim.current.buffer)
     # vim.command()
     selections = [{'start': 1, 'end': 1}]
@@ -48,6 +55,16 @@ def text_changed_from_vim():
 
 
 def update_text(name, lines, selections):
+    _is_updating_from_remote = True
+    if int(vim.eval('buffer_exists("{}")'.format(name))) == 1:
+        vim.command('buf ' + name)
+    else:
+        vim.command('enew')
+        vim.command('file ' + name)
+    vim.command('set buftype=nofile')
+    vim.command('set bufhidden=hide')
+    vim.command('set noswapfile')
+
     # todo : if current buffer is not the `name`d buffer, switch it
     vim.command(':b ' + name)
     mode = vim.eval('mode()')
@@ -58,3 +75,4 @@ def update_text(name, lines, selections):
     vim.current.buffer[:] = lines.split('\n')
     vim.command(":redraw")
     vim.command(":call cursor({})".format(selections))
+    _is_updating_from_remote = False

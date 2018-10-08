@@ -14,10 +14,10 @@ def start_server():
     global st
     if st != None:
         ghost_log.p("server already started")
-        return
+        return True
 
     st = server_thread.ServerThread()
-    st.start()
+    return st.start()
 
 
 def stop_server():
