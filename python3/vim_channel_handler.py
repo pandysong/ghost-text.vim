@@ -28,7 +28,7 @@ class Channel:
             self.writer = writer
             while True:
                 # todo: to allow abitry length of jason
-                data = await reader.read(4096)
+                data = await reader.read(1024*1024)
                 if not data:
                     break
                 ghost_log.p(data.decode())

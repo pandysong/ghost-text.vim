@@ -1,5 +1,6 @@
 import weakref
 import ghost_log
+import json
 
 
 def _cursor_pos(text, offset):
@@ -15,7 +16,6 @@ def _cursor_pos(text, offset):
 
 
 class Exchanger:
-    _command_template = '["call", "GhostTextUpdateText", ["{}","{}",{}]]'
 
     def __init__(self):
         '''both channel and ws has send() message to send string to remote
@@ -67,7 +67,9 @@ class Exchanger:
                     'error: no connection to vim, ignore msg from browser')
                 return
             # using the name to update text in vim
-            cmd = self._command_template.format(buf_name, text, list(pos))
+
+            cmd = json.dumps(["call", "GhostTextUpdateText",
+                              [buf_name, text, list(pos)]])
             ghost_log.p('vim <- server, {}'.format(cmd))
             await chnl.send(cmd)
 
