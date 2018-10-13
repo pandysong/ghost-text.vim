@@ -46,7 +46,8 @@ class Exchanger:
                     'warning: no connection to browswer, ignore msg from vim')
                 return
 
-            ghost_log.p('vim -> server, {}'.format(json_from_vim))
+            ghost_log.p2('vim -> server, {}'.format(json_from_vim))
+            ghost_log.p('vim -> server, text len {}'.format(len(msg)))
             await ws_man.send(buf_name, msg, None)
         return coro
 
@@ -54,8 +55,9 @@ class Exchanger:
         async def coro(buf_name, msg_from_browser):
             ''' msg_from_browser is the json from browser
             '''
-            ghost_log.p('server <- browser, {}'.format(msg_from_browser))
+            ghost_log.p2('server <- browser, {}'.format(msg_from_browser))
             text = msg_from_browser['text']
+            ghost_log.p('server <- browser, text len {}'.format(len(text)))
             try:
                 cursor_pos = msg_from_browser['selections'][0]['end']
                 pos = _cursor_pos(text, cursor_pos)
@@ -70,7 +72,8 @@ class Exchanger:
 
             cmd = json.dumps(["call", "GhostTextUpdateText",
                               [buf_name, text, list(pos)]])
-            ghost_log.p('vim <- server, {}'.format(cmd))
+            ghost_log.p2('vim <- server, {}'.format(cmd))
+            ghost_log.p('vim <- server, text len {}'.format(len(text)))
             await chnl.send(cmd)
 
         return coro

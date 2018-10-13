@@ -36,3 +36,6 @@ autocmd VimLeavePre * py3 vim_ghost_text.stop_server()
 
 command! -bar GhostTextStart :py3 vim_ghost_text.start_server()
 command! -bar GhostTextStop :py3 vim_ghost_text.stop_server()
+command! -bar GhostTextDebug0 :let g:ghost_text_verbose = 0
+command! -bar GhostTextDebug1 :let g:ghost_text_verbose = 1
+command! -bar GhostTextDebug2 :let g:ghost_text_verbose = 2
