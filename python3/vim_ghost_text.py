@@ -49,10 +49,12 @@ def text_changed_from_vim():
             'selections': selections
         }
     )
-    cmd = ':call ch_sendraw(g:channel,{})'.format(
-        json.dumps(json_dict))
+    if (int(vim.eval('exists("g:channel")')) == 1 and
+            vim.eval('ch_status(g:channel)') == "open"):
+        cmd = ':call ch_sendraw(g:channel,{})'.format(
+            json.dumps(json_dict))
 
-    vim.command(cmd)
+        vim.command(cmd)
 
 
 def update_text(name, lines, selections):
