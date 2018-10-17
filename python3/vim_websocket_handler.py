@@ -35,7 +35,7 @@ class Manager:
 
                     if flag_first_message:
                         global _buf_idx
-                        buf_name = 'GhostText_{}'.format(_buf_idx)
+                        buf_name = 'GhostText_{}.txt'.format(_buf_idx)
                         _buf_idx = _buf_idx + 1
                         # on first message, create a map
                         ghost_log.p('add buf_name {}'.format(buf_name))

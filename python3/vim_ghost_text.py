@@ -64,9 +64,6 @@ def update_text(name, lines, selections):
     else:
         vim.command('enew')
         vim.command('file ' + name)
-    vim.command('set buftype=nofile')
-    vim.command('set bufhidden=hide')
-    vim.command('set noswapfile')
 
     # todo : if current buffer is not the `name`d buffer, switch it
     vim.command(':b ' + name)
