@@ -31,7 +31,6 @@ class Channel:
                 data = await reader.read(1024*1024)
                 if not data:
                     break
-                ghost_log.p(data.decode())
                 try:
                     json_data = json.loads(data.decode())
                 except ValueError:

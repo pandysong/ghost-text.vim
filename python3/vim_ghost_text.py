@@ -26,7 +26,9 @@ def start_server():
 def stop_server():
     if (int(vim.eval('exists("g:channel")')) == 1 and
             vim.eval('ch_status(g:channel)') == "open"):
+        ghost_log.p('closing channel')
         vim.command('call ch_close(g:channel)')
+    ghost_log.p('stopping server')
     single_server.stop_server()
 
 

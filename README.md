@@ -63,6 +63,23 @@ command explicitly:
 :w another_file_name.txt
 ```
 
+# log
+
+Enable log:
+```
+:let g:ghost_text_log_file = "/Users/pandysong/ghost_log.txt"
+```
+
+live log could be viewed by:
+
+```
+tail -f /Users/pandysong/ghost_log.txt
+```
+
+disable log:
+```
+:unlet g:ghost_text_log_file
+```
 
 # todo 
 
