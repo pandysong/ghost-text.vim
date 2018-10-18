@@ -17,7 +17,10 @@ def start_server():
         return True
 
     st = server_thread.ServerThread()
-    return st.start()
+    ret = st.start()
+    if not ret:
+        st = None
+    return ret
 
 
 def stop_server():
