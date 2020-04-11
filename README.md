@@ -29,7 +29,7 @@ running following to see if it supports Python3:
 The plugin also needs `websockets` package:
 
 ```
-python3 install -m pip websockets
+python3 -m pip install websockets
 ```
 
 Also note that vim must support `channel`, so better to use the latest vim.
